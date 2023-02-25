@@ -4,7 +4,7 @@
 char team1,team2,t_won,t_choose;
 void member_input()
 {
-    
+    printf();
     
 }
 void input()
