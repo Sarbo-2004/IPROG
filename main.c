@@ -1,7 +1,9 @@
 #include<stdio.h>
+#include<string.h>
 #include<stdlib.h>
 
 char team1[50],team2[50],t_won[50],t_choose[50],player[50];
+int overs,run,score=0;
 void member_input()
 {
     FILE *fp, *fp1;
@@ -11,10 +13,11 @@ void member_input()
         printf("Error opening file!\n");
         //return 1;
     }
-    
+
+    printf("For %s\n",team1);   
     for (int i = 1; i <= 11; i++) 
     {
-        printf("enter player %d",i);
+        printf("enter player %d: ",i,team1);
         scanf("%s",player);
         fprintf(fp, "%s\n", player);
     }
@@ -28,9 +31,10 @@ void member_input()
         //return 1;
     }
     
+    printf("For %s\n",team2);  
     for (int j= 1; j <= 11; j++) 
     {
-        printf("enter player %d",j);
+        printf("enter player %d: ",j,team2);
         scanf("%s",player);
         fprintf(fp1, "%s\n", player);
     }
@@ -39,10 +43,26 @@ void member_input()
     fclose(fp1);
 }
 
+void match_input(){
+    int c,d,wicket;
+    for (int i = 1; i <=overs; i++)
+    {
+        printf("For %dth over",i);
+        for (int j = 1; j <=6; j++)
+        {
+            printf("\nEnter the runs scored in %dth ball: ",j);
+            scanf("%d",&run);
+            score+=run;
+        }
+        
+    }
+    
+}
+
 void input()
 {
     
-    int overs;
+
     printf("Enter names of two teams\n");
     scanf("%s",team1);
     scanf("%s",team2);
@@ -59,4 +79,5 @@ void input()
 int main()
 {
    input();
+   match_input();
 }    
