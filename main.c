@@ -2,8 +2,24 @@
 #include<string.h>
 #include<stdlib.h>
 
-char team1[50],team2[50],t_won[50],t_choose[50],player[50];
+
+char team1[50],team2[50],t_won[50],t_choose[50],player[50],striker[50],nonstriker[50],bowler[50];
 int overs,run,score=0;
+
+typedef struct batsman{
+  char name[50];
+  int balls_faced;
+  int runs;
+  float strikerate;
+} ba;
+
+typedef struct bowler{
+  char name[50];
+  int runs_given;
+  int wikets_taken;
+  float economy;
+} bow;
+
 void member_input()
 {
     FILE *fp, *fp1;
@@ -45,6 +61,13 @@ void member_input()
 
 void match_input(){
     int c,d,wicket;
+    float runrate;
+    printf("Enter Batsman1:\n");
+    scanf("%s",striker);
+    printf("Enter Batsman2:\n");
+    scanf("%s",nonstriker);
+    printf("Enter Bowler:\n");
+    scanf("%s",bowler);
     for (int i = 1; i <=overs; i++)
     {
         printf("For %dth over",i);
@@ -52,11 +75,16 @@ void match_input(){
         {
             printf("\nEnter the runs scored in %dth ball: ",j);
             scanf("%d",&run);
+            if (run>6)
+            {
+                printf("Enter Valid Run\n");
+                j--;
+            }
             score+=run;
         }
         
     }
-    
+    printf("The score is %d",score);
 }
 
 void input()
@@ -78,6 +106,12 @@ void input()
 
 int main()
 {
+   ba bt[11];
+   bow bo[11];
    input();
+   printf("For first innings\n");
    match_input();
+   printf("For second innings\n");
+   match_input();
+   return 0;
 }    
