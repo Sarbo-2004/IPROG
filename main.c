@@ -28,62 +28,23 @@ bow bo[11];
 ba bat[11];
 bow bo[11];
 
-int swap(int st, int nst)
+int swap(int *st, int *nst)
 {
     int temp;
-    temp=st;
-    st=nst;
-    nst=temp;
-    return(st,nst);
+    temp=*st;
+    *st=*nst;
+    *nst=temp;
+    
 }
 
-// void member_input()
-// {
-//     FILE *fp, *fp1;
-//     fp=fopen(team1,"w");
-//       if (fp == NULL)
-//     {
-//         printf("Error opening file!\n");
-//         //return 1;
-//     }
-
-//     printf("For %s\n",team1);   
-//     for (int i = 1; i <= 11; i++) 
-//     {
-//         printf("enter player %d: ",i,team1);
-//         scanf("%s",player);
-//         fprintf(fp, "%s\n", player);
-//     }
-    
-    
-//     fclose(fp);
-//     fp1=fopen(team2,"w");
-//       if (fp1 == NULL)
-//     {
-//         printf("Error opening file!\n");
-//         //return 1;
-//     }
-    
-//     printf("For %s\n",team2);  
-//     for (int j= 1; j <= 11; j++) 
-//     {
-//         printf("enter player %d: ",j,team2);
-//         scanf("%s",player);
-//         fprintf(fp1, "%s\n", player);
-//     }
-    
-    
-//     fclose(fp1);
-// }
 void print()
 {
-    printf("Name\truns\tballs faced\t6's\t4's\tstrike rate\n");
+    printf("%-20s %-10s %-10s %-20s %-10s %-10s\n","Name","Runs","Balls_faced","6's","4's","Strike_rate");
     for (int i = 0; i < 11; i++)
     {
-        printf("%s\t%d\t%d\t%d\t%d\t%.2f\n",bat[i].name,bat[i].runs,bat[i].balls_faced,bat[i].sixes,bat[i].fours,bat[i].strikerate);
+        printf("%-20s %-10d %-10d %-20d %-10d %-10f\n",bat[i].name,bat[i].runs,bat[i].balls_faced,bat[i].sixes,bat[i].fours,bat[i].strikerate);
     }
     
-    printf("%s\t");
 }
 void match_input(){
     
@@ -109,10 +70,10 @@ void match_input(){
         bat[i].strikerate=0.00;
         
     }
-    printf("Enter the number of bowlers in the team ");
-    int n_b;
-    scanf("%d",n_b);
-    for (int j = 0; j <n_b; j++)
+    printf("Enter the number of bowlers in the team\n");
+    int nb,j=0;
+    scanf("%d",&nb);
+    for (j = 0; j<nb; j++)
     {
         printf("Enter bowlers' details in opponent's team in bowling order\n");
         printf("Name:");
@@ -133,8 +94,8 @@ void match_input(){
             ++bat[st].balls_faced;
             printf("\nEnter the runs scored in %d:",j+1);
             scanf("%d",&run);
-            bat[st].runs=run;
-            bo[c_bo].runs_given=run;
+            bat[st].runs=bat[st].runs+run;
+            bo[c_bo].runs_given=bo[c_bo].runs_given+run;
             if (run==6)
                 ++bat[st].sixes;
             if(run==4)
@@ -143,12 +104,14 @@ void match_input(){
             
             score+=run;
             if(run%2!=0){
-                 swap(st,nst);
+                swap(&st,&nst);
             }
             
         }
     bo[c_bo].overs=i;
-    }  
+    swap(&st,&nst);
+    }
+    print();  
 }
 
 void input()
@@ -171,7 +134,7 @@ void input()
 int main()
 {
    
-   input();
+//    input();
    printf("For first innings\n");
    match_input();
 //    printf("For second innings\n");
