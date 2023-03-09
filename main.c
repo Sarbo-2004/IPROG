@@ -85,7 +85,7 @@ void match_input(){
     }
     int c_bo=0;
     
-    for (int i = 1; i <=3; i++)
+    for (int i = 1; i <=overs; i++)
     {
         printf("For %dth over\n",i);
         for (int j = 0; j <6; j++)
@@ -95,7 +95,9 @@ void match_input(){
             ++bat[st].balls_faced;
             printf("\nEnter the runs scored in %d:",j+1);
             scanf("%d",&run);
-            bat[st].runs=bat[st].runs+run;
+            if (run!=-1)
+            {
+                 bat[st].runs=bat[st].runs+run;
             bo[c_bo].runs_given=bo[c_bo].runs_given+run;
             if (run==6)
                 ++bat[st].sixes;
@@ -107,6 +109,22 @@ void match_input(){
             if(run%2!=0){
                 swap(&st,&nst);
             }
+            }
+            else
+            {
+                printf("%s is out!",bat[st].name);
+                ++bo[i].wickets_taken;
+                if (st>nst)
+                {
+                    st=st+1;
+                }
+                else
+                {
+                    st=nst+1;
+                }
+                
+            }
+           
             
         }
     bo[c_bo].overs=i;
