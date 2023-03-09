@@ -39,10 +39,11 @@ int swap(int *st, int *nst)
 
 void print()
 {
-    printf("%-20s %-10s %-10s %-20s %-10s %-10s\n","Name","Runs","Balls_faced","6's","4's","Strike_rate");
+    printf("%-20s %-10s %-20s %-10s %-10s %-10s\n","Name","Runs","Balls_faced","6's","4's","Strike_rate");
     for (int i = 0; i < 11; i++)
     {
-        printf("%-20s %-10d %-10d %-20d %-10d %-10f\n",bat[i].name,bat[i].runs,bat[i].balls_faced,bat[i].sixes,bat[i].fours,bat[i].strikerate);
+        printf("-------------------------------------------------------------------------------------------------\n");
+                printf("%-20s %-10d %-20d %-10d %-10d %-10f\n",bat[i].name,bat[i].runs,bat[i].balls_faced,bat[i].sixes,bat[i].fours,bat[i].strikerate);
     }
     
 }
