@@ -4,7 +4,7 @@
 
 
 char team1[50],team2[50],t_won[50],t_choose[50],player[50],striker[50],nonstriker[50],bowler[50];
-int overs=2,run,nb,score=0;
+int overs,run,score=0;
 
 typedef struct batsman{
   char name[50];
@@ -38,23 +38,15 @@ int swap(int *st, int *nst)
 }
 
 void print()
-{   printf("\n");
-    printf("\t\t\tBATTING SCORECARD\n");
-    printf("-------------------------------------------------------------------------------------------");
+{
     printf("%-20s %-10s %-20s %-10s %-10s %-10s\n","Name","Runs","Balls_faced","6's","4's","Strike_rate");
     for (int i = 0; i < 11; i++)
     {
+        printf("\t %s vs %s\n",team1,team2);
         printf("-------------------------------------------------------------------------------------------------\n");
+        printf("Toss won by: %s\t",t_won);
+        printf("Elected to: %s\n",t_choose);
                 printf("%-20s %-10d %-20d %-10d %-10d %-10f\n",bat[i].name,bat[i].runs,bat[i].balls_faced,bat[i].sixes,bat[i].fours,bat[i].strikerate);
-    }
-    printf("\n");
-    printf("\t\t\tBOWLING SCORECARD\n");
-     printf("-------------------------------------------------------------------------------------------");
-    printf("%-20s %-20s %-10s %-20s %-10s\n","Name","Runs_given","Overs","Wickets_taken","Economy");
-    for (int j= 0; j< nb; j++)
-    {
-        printf("-------------------------------------------------------------------------------------------------\n");
-                printf("%-20s %-20d %-10d %-20d %-10f\n",bo[j].name,bo[j].runs_given,bo[j].overs,bo[j].wickets_taken,bo[j].economy);
     }
     
 }
@@ -83,7 +75,7 @@ void match_input(){
         
     }
     printf("Enter the number of bowlers in the team\n");
-    int j=0;
+    int nb,j=0;
     scanf("%d",&nb);
     for (j = 0; j<nb; j++)
     {
@@ -93,7 +85,6 @@ void match_input(){
         bo[j].runs_given=0;
         bo[j].wickets_taken=0;
         bo[j].economy=0;
-        bo[j].overs=0;
     }
     int c_bo=0;
     
@@ -125,7 +116,7 @@ void match_input(){
             else
             {
                 printf("%s is out!",bat[st].name);
-                ++bo[c_bo].wickets_taken;
+                ++bo[i].wickets_taken;
                 if (st>nst)
                 {
                     st=st+1;
@@ -139,8 +130,7 @@ void match_input(){
            
             
         }
-    ++bo[c_bo].overs;
-    ++c_bo;
+    bo[c_bo].overs=i;
     swap(&st,&nst);
     }
     print();  
@@ -165,8 +155,7 @@ void input()
 
 int main()
 {
-   
-//    input();
+    input();
    printf("For first innings\n");
    match_input();
 //    printf("For second innings\n");
