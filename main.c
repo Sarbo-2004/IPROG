@@ -3,8 +3,10 @@
 #include<stdlib.h>
 
 
-char team1[50],team2[50],t_won[50],t_choose[50],player[50],striker[50],nonstriker[50],bowler[50],t_lose[50];
-int overs=2,run,nb,score,wickets=0;
+char team1[50],team2[50],t_won[50],t_choose[50],t_lose[50];
+int overs,run,nb,score,wickets=0;
+int win[2];
+char t1[50],t2[50];
 
 typedef struct batsman{
   char name[50];
@@ -38,9 +40,12 @@ int swap(int *st, int *nst)
 
 void print()
 {   
+    // fp=fopen("MATCH_SUMMARY.txt","a");
     printf("\n");
-    printf("**************************Match Summary**************************");
+    printf("**************************Match Summary**************************\n");
+    // fprintf(fp,"**************************Match Summary**************************\n");
     printf("\t %s vs %s\n",team1,team2);
+    // fprintf(fp,"\t %s vs %s\n",team1,team2);
     printf("Toss won by: %s\t",t_won);
     printf("Elected to: %s\n",t_choose);
     printf("\n");
@@ -61,20 +66,13 @@ void print()
         printf("%-20s %-20d %-10d %-20d %-10f\n",bo[j].name,bo[j].runs_given,bo[j].overs,bo[j].wickets_taken,bo[j].economy);
         printf("-------------------------------------------------------------------------------------------------\n");
     }
-    printf("Total Score: %d/%d",score,wickets);
-    printf("%s has to chase %d runs in %d balls",t_lose,score+1,overs*6);
-}
-void match_input(){
+    printf("Total Score: %d/%d\n",score,wickets);
+    printf("TARGET: %d runs in %d balls\n",score+1,overs*6);
     
-    int c,d,wicket;
-    float runrate;
-    int run=0;
-    int balls=0;
-    int sixes=0;
-    int fours=0;
-    // char bool;
+}
+
+void match_input(){
     int st=0, nst=1;
-    // bow bo;
    printf("Enter Players' details in batting order\n");
     for (int i = 0; i < 11; i++)
     {
@@ -88,7 +86,7 @@ void match_input(){
         bat[i].strikerate=0.00;
         
     }
-    printf("Enter the number of bowlers in the team\n");
+    printf("Enter the number of bowlers in the opponent's team\n");
     int j=0;
     scanf("%d",&nb);
     printf("Enter bowlers' details in opponent's team in bowling order\n");
@@ -106,13 +104,12 @@ void match_input(){
     
     for (int i = 1; i <=overs; i++)
     {
-        printf("For %dth over\n",i);
+        printf("\n******For %dth over******\n",i);
         for (int j = 0; j <6; j++)
         {
-           
-             
+            
             ++bat[st].balls_faced;
-            printf("\nEnter the runs scored in %d:",j+1);
+            printf("Enter the runs scored in %d\n:",j+1);
             scanf("%d",&run);
             if (run!=-1)
             {
@@ -122,7 +119,7 @@ void match_input(){
                 ++bat[st].sixes;
             if(run==4)
                 ++bat[st].fours;
-            bat[st].strikerate=((bat[st].runs/bat[st].balls_faced)*100);
+            bat[st].strikerate=(((bat[st].runs)/(bat[st].balls_faced))*(100));
             
             score+=run;
             if(run%2!=0){
@@ -131,7 +128,7 @@ void match_input(){
             }
             else
             {   ++wickets;
-                printf("%s is out!",bat[st].name);
+                printf("%s is out!\n",bat[st].name);
                 ++bo[c_bo].wickets_taken;
                 if (st>nst)
                 {
@@ -143,13 +140,33 @@ void match_input(){
                 }
                 
             }
-           
+           if(wickets==10)
+           {
+            printf("***********MATCH ENDED***********\n");
+           }
             
         }
     ++bo[c_bo].overs;
-    ++c_bo;
+        bo[c_bo].economy=bo[c_bo].runs_given/bo[c_bo].overs;
+        ++c_bo;
+    if (nb<overs)
+    {
+        if ((overs-c_bo)==1)
+    {
+        c_bo=0;
+    }
+    }
+    
+    
+    
     swap(&st,&nst);
     }
+    printf("***********MATCH ENDED***********\n");
+    for (int z = 0; z < 2; z++)
+    {
+        win[z]=score;
+    }
+    
     print();  
 }
 
@@ -164,17 +181,17 @@ void input()
     scanf("%d",&overs);
     printf("Who won the toss??\n");
     scanf("%s",t_won);
-    if (strcmp(t_won,team1))
-    {
-        strcpy(t_lose,team2);
-    }
-    else
-    {
-        strcpy(t_lose,team1);
-    }
+    
     printf("What did %s chose to do first?(batting/fielding)\n",t_won);
     scanf("%s",t_choose);
-    // member_input();
+    int value=strcmp(t_choose,"batting");
+    if (value==0)
+    {
+        
+        strcpy(t1,t_won);
+            }
+    
+    
 }
 
 
@@ -182,9 +199,54 @@ int main()
 {
    
 input();
-   printf("For first innings\n");
+   FILE *ptr;
+   ptr=fopen("MatchSummary.txt","a"); 
+   fprintf(ptr,"\t %s vs %s\n",team1,team2);
+    fprintf(ptr,"Toss won by: %s\t",t_won);
+    fprintf(ptr,"Elected to: %s\n",t_choose);
+   for(int v=1;v<=2;v++)
+   {
+   printf("**************%d Innings**************\n",v);
    match_input();
-//    printf("For second innings\n");
-//    match_input();
+    fprintf(ptr,"\n");
+    fprintf(ptr,"*********************%d Innings Score Card*********************\n",v);
+    
+    fprintf(ptr,"\n");
+    fprintf(ptr,"\t\t\t\t\t\t\t\tBATTING SCORECARD\n");
+    fprintf(ptr,"-------------------------------------------------------------------------------------------\n");
+    fprintf(ptr,"%-20s %-10s %-20s %-10s %-10s %-10s\n","Name","Runs","Balls_faced","6's","4's","Strike_rate");
+    fprintf(ptr,"-------------------------------------------------------------------------------------------\n");
+    for (int i = 0; i < 11; i++)
+    {
+        fprintf(ptr,"%-20s %-10d %-20d %-10d %-10d %-10f\n",bat[i].name,bat[i].runs,bat[i].balls_faced,bat[i].sixes,bat[i].fours,bat[i].strikerate);
+        fprintf(ptr,"-------------------------------------------------------------------------------------------------\n");
+    }
+    fprintf(ptr,"\n");
+    fprintf(ptr,"\t\t\t\t\t\t\t\tBOWLING SCORECARD\n");
+     fprintf(ptr,"-------------------------------------------------------------------------------------------\n");
+    fprintf(ptr,"%-20s %-20s %-10s %-20s %-10s\n","Name","Runs_given","Overs","Wickets_taken","Economy");
+    for (int j= 0; j< nb; j++)
+    {
+        fprintf(ptr,"%-20s %-20d %-10d %-20d %-10f\n",bo[j].name,bo[j].runs_given,bo[j].overs,bo[j].wickets_taken,bo[j].economy);
+        fprintf(ptr,"-------------------------------------------------------------------------------------------------\n");
+        fprintf(ptr,"Total Score: %d/%d",score,wickets);
+    }
+    if(v==1)
+    {
+    fprintf(ptr,"TARGET: %d runs in %d balls\n",score+1,overs*6);
+    fclose(ptr);
+    }
+    else if (v==2)
+    {
+       if(win[0]>win[1])
+       {
+        fprintf(fp,"%s won",);
+       }
+        
+    }
+    
+    
+   }
+
    return 0;
 } 
