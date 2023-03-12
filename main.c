@@ -40,8 +40,6 @@ int swap(int *st, int *nst)
 }
 
 
-
-
 void filehandling(int v)
 {
 fprintf(ptr,"\n");
@@ -73,8 +71,6 @@ fprintf(ptr,"\n");
 
 
 
-
-
 void print()
 {   
     printf("\n");
@@ -95,7 +91,7 @@ void print()
     }
     printf("\n");
     printf("\t\t\tBOWLING SCORECARD\n");
-     printf("-------------------------------------------------------------------------------------------\n");
+     printf("--------------------`-----------------------------------------------------------------------\n");
     printf("%-20s %-20s %-10s %-20s %-10s\n","Name","Runs_given","Overs","Wickets_taken","Economy");
     for (int j= 0; j< nb; j++)
     {
@@ -141,7 +137,7 @@ void match_input(){
         bo[j].overs=0;
     }
     int c_bo=0;
-    
+    printf("Enter runs between 0-6 and input -1 for out");
     for (int i = 1; i <=overs; i++)
     {
         printf("\n******For %dth over******\n",i);
@@ -149,7 +145,7 @@ void match_input(){
         {
             
             
-            printf("Enter the runs scored in: %d\n",j+1);
+            printf("Enter the runs scored in %d\n:",j+1);
             scanf("%d",&run);
             if (run>6)
             {
@@ -196,13 +192,13 @@ void match_input(){
             }
            if(wickets==10)
            {
-            printf("***********MATCH ENDED***********\n");
+            // printf("***********MATCH ENDED***********\n");
             break;
            }
             
         }
-        overs=balls/6 + (balls%6)*0.1;
-    bo[c_bo].overs=bo[c_bo].overs+overs;
+        
+        ++bo[c_bo].overs;
         bo[c_bo].economy=(bo[c_bo].runs_given*1.0/balls)*6;
         ++c_bo;
     if (nb<overs)
@@ -216,7 +212,7 @@ void match_input(){
     swap(&st,&nst);
     balls=0;
     }
-    printf("***********MATCH ENDED***********\n");
+    printf("***********INNINGS ENDED***********\n");
     
     print();  
 }
@@ -224,7 +220,7 @@ void match_input(){
 
 
 
-void input()
+void team_input()
 {
     
 
@@ -270,7 +266,7 @@ void input()
 
 int main()
 {
-   input();
+   team_input();
    char team[50];
    strcpy(team,team1);
    strcat(team,team2);
